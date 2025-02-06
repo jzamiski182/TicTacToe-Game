@@ -29,10 +29,8 @@ public class TicTacToe
         while (!gameOver){
             printBoard();
             printStatus(firstPlayer ? 1 : 2);
-            System.out.print("Enter row (0-2): ");
-            int row = scanner.nextInt();
-            System.out.print("Enter column (0-2): ");
-            int col = scanner.nextInt();
+            int row = validateInput(scanner, "Enter row (0, 1, 2): ");
+            int col = validateInput(scanner, "Enter column (0, 1, 2): ");
 
             if (validMove(row,col)){
                 board[row][col]= firstPlayer ? 'X' : 'O';
@@ -59,6 +57,24 @@ public class TicTacToe
         }
 
     }
+
+    private int validateInput(Scanner scanner, String userInput) { //ensure user input is, 1: a number, 2: within range
+    while(true) {
+        System.out.print(userInput); //prompt player input here. input starts as string
+
+        if(scanner.hasNextInt()) { //checks if user input can convert to int
+            int rowCol = scanner.nextInt();
+            if(rowCol >= 0 && rowCol < BOARDSIZE) { //check if input is in range
+                return rowCol;
+        } else {
+                System.out.println("This number is out of range, please input from (0, 1, 2)");
+            }
+    } else { //if input is not an int, clear input and loop
+            System.out.println("Invalid input, please input a number (0, 1, 2)");
+            scanner.next();
+        }
+    }
+}
 
     private void printStatus(int player){
         System.out.println("Player "+ player + " 's turn (" + (player == 1 ? 'X' : 'O')+ ")" );
